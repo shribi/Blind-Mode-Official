@@ -8,10 +8,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -23,7 +25,7 @@ import org.opencv.imgproc.Imgproc;
 
 public class CameraActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2{
     private static final String TAG="MainActivity";
-
+    private TextToSpeech textToSpeech;
     private Mat mRgba;
     private Mat mGray;
     private CameraBridgeViewBase mOpenCvCameraView;
@@ -115,6 +117,18 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
 
         return mRgba;
 
+    }
+    private long backpressed;
+    public void onBackPressed(){
+        if(backpressed + 2000 > System.currentTimeMillis()){
+            super.onBackPressed();
+            finishAffinity();
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Press back again to exit!!", Toast.LENGTH_SHORT).show();
+            textToSpeech.speak("Press back again to exit", TextToSpeech.QUEUE_FLUSH, null, null);
+            backpressed = System.currentTimeMillis();
+        }
     }
 
 }

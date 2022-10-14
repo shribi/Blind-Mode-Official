@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,16 +17,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.opencv.android.OpenCVLoader;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity<pubic> extends AppCompatActivity {
 
     private SpeechRecognizer speechRecognizer;
     private TextToSpeech textToSpeech;
     private Intent intent;
+    public Button button;
+    public static boolean blindModeOn = false;
 
     static {
         if(OpenCVLoader.initDebug()){
@@ -36,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Button camera_button;
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         speechRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
         intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+        button = (Button)findViewById(R.id.button);
 
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
@@ -86,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 String res;
 
-                if(matches!=null){
+                if(matches!=null || blindModeOn){
                     res=matches.get(0);
 
-                    if(res.equals("on")){
+                    if(res.equals("on") || blindModeOn){
                         textToSpeech.speak("Welcome to blind mode",TextToSpeech.QUEUE_FLUSH,null,null);
                         startActivity(new Intent(MainActivity.this,CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
@@ -119,29 +124,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blindModeOn = true;
+            }
+        });
         textToSpeech=new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if (status != TextToSpeech.ERROR){
+                if (status != TextToSpeech.ERROR || blindModeOn){
                     textToSpeech.speak("To Enable Blind Mode Say ON",TextToSpeech.QUEUE_FLUSH,null,null);
                     speechRecognizer.startListening(intent);
                 }
             }
         });
-
-//        camera_button=findViewById(R.id.camera_button);
-//        camera_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                textToSpeech.speak("Please tell Blind mode On",TextToSpeech.QUEUE_FLUSH,null,null);
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                speechRecognizer.startListening(intent);
-//            }
-//        });
 
     }
 }
