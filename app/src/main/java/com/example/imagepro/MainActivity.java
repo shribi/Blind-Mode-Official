@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.MediaStore;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -16,10 +15,10 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.opencv.android.OpenCVLoader;
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 
 import java.util.ArrayList;
 
@@ -31,16 +30,6 @@ public class MainActivity<pubic> extends AppCompatActivity {
     public Button button;
     public static boolean blindModeOn = false;
 
-    static {
-        if(OpenCVLoader.initDebug()){
-            Log.d("MainActivity: ","Opencv is loaded");
-        }
-        else {
-            Log.d("MainActivity: ","Opencv failed to load");
-        }
-    }
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +42,8 @@ public class MainActivity<pubic> extends AppCompatActivity {
         intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
         button = (Button)findViewById(R.id.button);
+
+
 
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
@@ -96,11 +87,14 @@ public class MainActivity<pubic> extends AppCompatActivity {
 
                     if(res.equals("on") || blindModeOn){
                         textToSpeech.speak("Welcome to blind mode",TextToSpeech.QUEUE_FLUSH,null,null);
+
+//                        int camIndex = 0;
+//                        obj[0] = pyobj.callAttr("main", camIndex);
                         startActivity(new Intent(MainActivity.this,CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                     }
                     else{
-                        textToSpeech.speak("Sorry, To Enable Blind Mode Say ON",TextToSpeech.QUEUE_FLUSH,null,null);
+                        textToSpeech.speak("Sorry To Enable Blind Mode Say ON",TextToSpeech.QUEUE_FLUSH,null,null);
 
                                 try {
                                     Thread.sleep(3000);
