@@ -1,5 +1,6 @@
 package com.example.imagepro
 
+
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -14,6 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import cameraServices.Camera2Api
@@ -30,11 +32,11 @@ import kotlin.math.atan2
 import kotlin.math.roundToInt
 
 
-class MainActivity : AppCompatActivity() {
+class CameraActivity : AppCompatActivity() {
 
     companion object {
         const val CODE_PERM_SYSTEM_ALERT_WINDOW = 6112
-        var ins: MainActivity? = null
+        var ins: CameraActivity? = null
         var cameraRotation: Int = 90
     }
 
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             val cameraRotation = getCameraRotation()
             if (previousRotation != cameraRotation) {
                 previousRotation = cameraRotation
-                this@MainActivity.setCameraRotation(cameraRotation)
+                this@CameraActivity.setCameraRotation(cameraRotation)
             }
         }
 
@@ -119,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
+        setContentView(R.layout.activity_main)
         initView()
         permissionHandler = PermissionHandler(this)
         permissionHandler.requestCameraPermission()
@@ -127,16 +129,16 @@ class MainActivity : AppCompatActivity() {
             manager = it
         }
         val manager =
-            this.getSystemService(CAMERA_SERVICE) as CameraManager
+                this.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         if (manager.cameraIdList.isEmpty()) {
             switchCam.isEnabled = false
             switchCam.setTextColor(Color.GRAY)
         }
         for (cameraId in manager.cameraIdList) {
             if (manager.getCameraCharacteristics(cameraId!!)
-                    .get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL) == CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_FULL ||
-                manager.getCameraCharacteristics(cameraId)
-                    .get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL) == CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_3
+                            .get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL) == CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_FULL ||
+                    manager.getCameraCharacteristics(cameraId)
+                            .get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL) == CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_3
             ) {
                 camera2Support = true
                 break
@@ -168,16 +170,16 @@ class MainActivity : AppCompatActivity() {
         imag = imageView
         imageView.visibility = View.GONE
         manager.registerListener(
-            sensorEvent,
-            manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_NORMAL
+                sensorEvent,
+                manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL
         )
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionHandler.onRequestPermissionsResult(requestCode, grantResults)

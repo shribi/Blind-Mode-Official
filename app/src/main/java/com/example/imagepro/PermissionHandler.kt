@@ -1,4 +1,4 @@
-package com.example.imagepro;
+package com.example.imagepro
 
 import android.Manifest
 import android.annotation.TargetApi

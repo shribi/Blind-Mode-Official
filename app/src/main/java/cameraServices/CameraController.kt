@@ -13,10 +13,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
-import com.helpinghand.pysenses.Detector
-import com.helpinghand.pysenses.MainActivity
-import com.helpinghand.pysenses.R
-import com.helpinghand.pysenses.Speak
+import com.example.imagepro.CameraActivity
+import com.example.imagepro.Detector
+import com.example.imagepro.R
+import com.example.imagepro.Speak
 
 
 abstract class CameraController : Service() {
@@ -33,7 +33,7 @@ abstract class CameraController : Service() {
         //instance
         var instance: CameraController? = null
 
-       var flag = 0
+        var flag = 0
         var recreate=false
         var singleDetect=false
     }
@@ -112,8 +112,8 @@ abstract class CameraController : Service() {
         detectorObject = mainObject!!.callAttr("Detect")
         switchCamera()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startMyOwnForeground() else startForeground(
-            1,
-            Notification()
+                1,
+                Notification()
         )
         return START_NOT_STICKY
     }
@@ -132,34 +132,34 @@ abstract class CameraController : Service() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startMyOwnForeground() {
         val pendingIntent: PendingIntent =
-            Intent(this, MainActivity::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(this, 0, notificationIntent, 0)
-            }
-        val notificationChannelID = "com.example.pysenses"
+                Intent(this, CameraActivity::class.java).let { notificationIntent ->
+                    PendingIntent.getActivity(this, 0, notificationIntent, 0)
+                }
+        val notificationChannelID = "com.example.imagepro"
 
-        val channelName = "Pysenses Service"
+        val channelName = "Blind Mode"
 
         val chan = NotificationChannel(
-            notificationChannelID,
-            channelName,
-            NotificationManager.IMPORTANCE_NONE
+                notificationChannelID,
+                channelName,
+                NotificationManager.IMPORTANCE_NONE
         )
         chan.lightColor = Color.BLUE
         chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
 
         val manager: NotificationManager =
-            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
         manager.createNotificationChannel(chan)
 
         val notificationBuilder = NotificationCompat.Builder(this, notificationChannelID)
 
         val notification = notificationBuilder.setOngoing(true)
-            .setSmallIcon(R.drawable.ic_camera_black_24dp)
-            .setContentTitle("App is running in background")
-            .setContentIntent(pendingIntent)
-            .setPriority(NotificationManager.IMPORTANCE_MIN)
-            .setCategory(Notification.CATEGORY_SERVICE)
-            .build()
+                .setSmallIcon(R.drawable.ic_camera_black_24dp)
+                .setContentTitle("App is running in background")
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build()
         startForeground(2, notification)
     }
 
@@ -169,14 +169,14 @@ abstract class CameraController : Service() {
 
 
         val type = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-            WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         else
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 
         val params = WindowManager.LayoutParams(
-            type,
-            (WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE),
-            PixelFormat.TRANSLUCENT
+                type,
+                (WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE),
+                PixelFormat.TRANSLUCENT
         )
 
         val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -198,11 +198,11 @@ abstract class CameraController : Service() {
             }
             computingDetection = true
             runInBackground(
-                Runnable {
-                    Detector(bytes, detectorObject!!, focalLength, sensorHeight, tts)
-                    computingDetection = false
-                    firstRun = false
-                }
+                    Runnable {
+                        Detector(bytes, detectorObject!!, focalLength, sensorHeight, tts)
+                        computingDetection = false
+                        firstRun = false
+                    }
             )
 
         }

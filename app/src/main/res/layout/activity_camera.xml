@@ -132,12 +132,18 @@
                 android:id="@+id/previewbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:text="@string/preview"
+                android:textOff="@string/preview_off"
+                android:textOn="@string/preview_on"
                 android:textSize="12sp" />
 
             <com.nex3z.togglebuttongroup.button.LabelToggle
                 android:id="@+id/singleshot"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:text="@string/singleshot"
+                android:textOff="@string/singleshot_off"
+                android:textOn="@string/singleshot_on"
                 android:textSize="12sp" />
 
         </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>

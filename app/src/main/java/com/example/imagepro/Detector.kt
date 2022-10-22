@@ -4,7 +4,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import cameraServices.CameraController.Companion.imag
 import com.chaquo.python.PyObject
-import com.example.imagepro.MainActivity.Companion.cameraRotation
+import com.example.imagepro.CameraActivity.Companion.cameraRotation
 
 class Detector(
     bytes: ByteArray,
@@ -18,7 +18,7 @@ class Detector(
         val outpt = detectorObject["returnFrame"].toString()
         val decodedString =
             Base64.decode(outpt.substring(2, outpt.length - 1), Base64.DEFAULT)
-        MainActivity.ins!!.runOnUiThread {
+        CameraActivity.ins!!.runOnUiThread {
             imag!!.setImageBitmap(
                 BitmapFactory.decodeByteArray(
                     decodedString,

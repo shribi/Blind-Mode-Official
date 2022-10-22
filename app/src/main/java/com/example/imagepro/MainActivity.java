@@ -90,7 +90,7 @@ public class MainActivity<pubic> extends AppCompatActivity {
 
 //                        int camIndex = 0;
 //                        obj[0] = pyobj.callAttr("main", camIndex);
-                        startActivity(new Intent(MainActivity.this,CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(MainActivity.this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                     }
                     else{
