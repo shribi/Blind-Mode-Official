@@ -16,7 +16,6 @@ class PermissionHandler internal constructor(private val activity: Activity) {
      * once they close the dialog.
      */
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private fun showRequestPermissionRationale(permission_code: Int) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return

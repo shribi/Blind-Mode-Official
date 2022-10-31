@@ -10,34 +10,27 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <queries>
-        <intent>
-            <action android:name="android.speech.RecognitionService" />
-        </intent>
-    </queries>
 
+    <uses-feature android:name="android.hardware.Camera" />
     <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.autofocus"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.front.autofocus"
-        android:required="false" />
+        android:name="android.hardware.camera2"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
+        android:screenOrientation="portrait"
         android:icon="@mipmap/ic_launcher"
         android:label="Blind Mode"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImagePro">
-        <activity android:name=".CameraActivity"></activity>
+        <activity
+            android:screenOrientation="nosensor"
+            android:name=".CameraActivity">
+
+        </activity>
         <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="cameraServices.CameraController"
+            android:exported="true" />
+        <service
+            android:name="cameraServices.Camera2Api"
+            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"

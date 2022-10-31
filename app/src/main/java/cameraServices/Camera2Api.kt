@@ -156,7 +156,7 @@ open class Camera2Api : CameraController() {
                             )
                             focalLength = captureRequest?.get(CaptureRequest.LENS_FOCAL_LENGTH)!!
 
-                        } catch (e: CameraAccessException) {
+                        } catch (_: CameraAccessException) {
                         }
                     }
 
@@ -164,7 +164,7 @@ open class Camera2Api : CameraController() {
                     }
                 }, null
             )
-        } catch (e: CameraAccessException) {
+        } catch (_: CameraAccessException) {
         }
     }
 

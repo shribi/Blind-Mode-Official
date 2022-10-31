@@ -93,6 +93,7 @@ abstract class CameraController : Service() {
         count = 0
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         wakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
             newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Camera::lock").apply {
@@ -163,6 +164,7 @@ abstract class CameraController : Service() {
         startForeground(2, notification)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initOverlay() {
         val li = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rootView = li.inflate(R.layout.overlay, null)

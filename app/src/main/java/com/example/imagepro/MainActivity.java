@@ -42,6 +42,14 @@ public class MainActivity<pubic> extends AppCompatActivity {
         intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
         button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blindModeOn = true;
+                textToSpeech.speak("Welcome to blind mode",TextToSpeech.QUEUE_FLUSH,null,null);
+                startActivity(new Intent(MainActivity.this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        });
 
 
 
@@ -116,12 +124,6 @@ public class MainActivity<pubic> extends AppCompatActivity {
             @Override
             public void onEvent(int i, Bundle bundle) {
 
-            }
-        });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blindModeOn = true;
             }
         });
         textToSpeech=new TextToSpeech(this, new TextToSpeech.OnInitListener() {
