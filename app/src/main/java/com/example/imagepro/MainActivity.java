@@ -34,13 +34,6 @@ public class MainActivity<pubic> extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
-        //intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-
-        speechRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
-        intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-
         button = (Button)findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,40 +43,12 @@ public class MainActivity<pubic> extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
-
-
+        
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
+        speechRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
+        intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
-            @Override
-            public void onReadyForSpeech(Bundle bundle) {
-
-            }
-
-            @Override
-            public void onBeginningOfSpeech() {
-
-            }
-
-            @Override
-            public void onRmsChanged(float v) {
-
-            }
-
-            @Override
-            public void onBufferReceived(byte[] bytes) {
-
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-
-            }
-
-            @Override
-            public void onError(int i) {
-
-            }
-
             @Override
             public void onResults(Bundle bundle) {
                 ArrayList<String> matches;
@@ -93,11 +58,8 @@ public class MainActivity<pubic> extends AppCompatActivity {
                 if(matches!=null || blindModeOn){
                     res=matches.get(0);
 
-                    if(res.equals("on") || blindModeOn){
+                    if(res.equals("start") || blindModeOn){
                         textToSpeech.speak("Welcome to blind mode",TextToSpeech.QUEUE_FLUSH,null,null);
-
-//                        int camIndex = 0;
-//                        obj[0] = pyobj.callAttr("main", camIndex);
                         startActivity(new Intent(MainActivity.this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                     }
