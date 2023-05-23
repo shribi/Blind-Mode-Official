@@ -50,6 +50,36 @@ public class MainActivity<pubic> extends AppCompatActivity {
 
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
+            public void onReadyForSpeech(Bundle params) {
+                
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+
+            }
+
+            @Override
+            public void onRmsChanged(float rmsdB) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onError(int error) {
+
+            }
+
+            @Override
             public void onResults(Bundle bundle) {
                 ArrayList<String> matches;
                 matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -92,7 +122,7 @@ public class MainActivity<pubic> extends AppCompatActivity {
             @Override
             public void onInit(int status) {
                 if (status != TextToSpeech.ERROR || blindModeOn){
-                    textToSpeech.speak("To Enable Blind Mode Say ON",TextToSpeech.QUEUE_FLUSH,null,null);
+                    textToSpeech.speak("To Enable Blind Mode Say Start",TextToSpeech.QUEUE_FLUSH,null,null);
                     speechRecognizer.startListening(intent);
                 }
             }
